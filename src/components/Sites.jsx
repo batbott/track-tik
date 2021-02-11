@@ -9,6 +9,7 @@ class Sites extends Component {
       siteName,
       siteAddress,
       mainContact,
+      onClickHandler,
       hideChevron,
       hideHoverEffects,
     } = this.props;
@@ -16,7 +17,7 @@ class Sites extends Component {
       <div
         className={hideHoverEffects ? "site-box hide-hover" : "site-box"}
         onClick={() => {
-          this.props.onClickHandler();
+          onClickHandler();
         }}
       >
         <img className="circle-img" src={imageUrl} alt="Site IMG" />

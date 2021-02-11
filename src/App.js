@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Sites from "./components/Sites";
 import Details from "./components/Details";
+import Pagination from "./components/Pagination";
 import "./App.css";
 import { HiOutlineSearch } from "react-icons/hi";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -13,6 +14,10 @@ function App() {
   const [showingDetails, setShowingDetails] = React.useState(false);
 
   const [detailsId, setDetailsId] = React.useState();
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const [sitesPerPage] = React.useState(80);
 
   const fetchSites = fetch("https://tracktik-challenge.staffr.com/sites")
     .then((response) => {
@@ -30,13 +35,20 @@ function App() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [fetchSites]);
 
   const findDetailsById = () => {
     return (
       data && data.length > 0 && data.find((datum) => datum.id === detailsId)
     );
   };
+
+  const indexOfLastSite = sitesPerPage * currentPage;
+  const indexOfFirstSite = indexOfLastSite - sitesPerPage;
+  const currentSites = data.slice(indexOfFirstSite, indexOfLastSite);
+
+  //Browse pages
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -66,9 +78,9 @@ function App() {
               }}
             />
           )}
-          {data &&
-            data.length > 0 &&
-            data.map((datum) => (
+          {currentSites &&
+            currentSites.length > 0 &&
+            currentSites.map((datum) => (
               <div
                 className={showingDetails ? "sites hide" : "sites"}
                 key={datum.id}
@@ -89,6 +101,16 @@ function App() {
               </div>
             ))}
         </div>
+        {!showingDetails && (
+          <div>
+            <Pagination
+              currentPage={currentPage}
+              sitesPerPage={sitesPerPage}
+              totalSites={data.length}
+              paginate={paginate}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ class Details extends Component {
           />
         </div>
         <img className="detailed-image" src={images[0]} alt="Detailed IMG" />
-        <div className="additionalInfo">
+        <div className="additional-info">
           <div>
             <FaUser size="2em" className="info-icons" />
             <div>
